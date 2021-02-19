@@ -11,6 +11,12 @@ function App() {
     socket.on("connection", (message) => {
       console.log(message);
     });
+    socket.on("position", (message) => {
+      console.log(message);
+    });
+    socket.on("endOfTrack", (message) => {
+      console.log(message);
+    });
   }, []);
 
   return (
