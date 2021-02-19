@@ -6,7 +6,7 @@ import Sidebar from "./layout/Sidebar";
 
 function App() {
   const [stopped, setStopped] = useState(false);
-
+  const [positions, setPositions] = useState([]);
   useEffect(() => {
     const socket = io.connect(process.env.REACT_APP_SERVER, {
       withCredentials: true,
@@ -17,16 +17,19 @@ function App() {
     socket.on("position", (message) => {
       console.log(message);
       setStopped(message.stopped);
+      let newPositions = positions;
+      newPositions.push(message);
+      setPositions(newPositions);
     });
     socket.on("endOfTrack", (message) => {
       console.log(message);
     });
-  }, []);
+  }, [setPositions]);
 
   return (
     <div className="App">
       <div id="content">
-        <MapView />
+        <MapView key={positions.length} positions={positions}/>
       </div>
       <Sidebar stopped={stopped} />
     </div>
