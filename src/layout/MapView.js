@@ -35,6 +35,7 @@ function MapView({ positions }) {
   const mapElement = useRef();
   const mapRef = useRef();
   mapRef.current = map;
+  const [features, setFeatures] = useState([]);
 
   const move = (positions, setMap) => {
     let lastIndex = positions.length - 1;
@@ -48,19 +49,25 @@ function MapView({ positions }) {
     ]);
 
     let lineStr = new LineString([coordOld, coordNew]);
+    let newFeature = new Feature({
+      geometry: lineStr,
+      name: "Line",
+    });
+    newFeature.setStyle(
+      positions[lastIndex].stopped ? stoppedStyle : recordingStyle
+    );
+
+    let newFeatures = features;
+    newFeatures.push(newFeature);
+    setFeatures(newFeatures);
 
     let line = new Vector({
       source: new VectorSource({
-        features: [
-          new Feature({
-            geometry: lineStr,
-            name: "Line",
-          }),
-        ],
+        features: features,
       }),
     });
+    map.addLayer(line);
 
-    line.setStyle(recordingStyle);
     //map.addLayer(ship(coordinates, heading));
     map.getView().fit(lineStr, { padding: [170, 50, 30, 150], maxZoom: 17 });
   };

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-function Sidebar({ stopped }) {
+function Sidebar(props) {
   const [buttonValue, setButtonValue] = useState(
-    stopped ? "START RECORDING" : "STOP RECORDING"
+    props.stopped ? "START RECORDING" : "STOP RECORDING"
   );
 
   const changeStatus = () => {
