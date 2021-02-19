@@ -1,19 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
-function Sidebar({ stopped }) {
-  const changeStatus = (event) => {
+function Sidebar(props) {
+  const [buttonValue, setButtonValue] = useState(
+    props.stopped ? "START RECORDING" : "STOP RECORDING"
+  );
+
+  const changeStatus = () => {
     axios
       .put(process.env.REACT_APP_SERVER + "/status", {
         withCredentials: true,
       })
       .then((response) => {
-        console.log(response.data);
-        event.target.value = response.data.stopped
-          ? "START RECORDING"
-          : "STOP RECORDING";
+        console.log(response.data.stopped);
+        setButtonValue(
+          response.data.stopped ? "START RECORDING" : "STOP RECORDING"
+        );
       });
   };
+
   return (
     <div id="sidebar" className="container">
       <div className="sidebar-header">
@@ -23,9 +28,9 @@ function Sidebar({ stopped }) {
         id="stop"
         type="button"
         className="btn btn-outline-info p-4 pl-5 pr-5 mt-5"
-        onClick={(e) => changeStatus(e)}
+        onClick={changeStatus}
       >
-        {stopped ? "START RECORDING" : "STOP RECORDING"}
+        {buttonValue}
       </button>
     </div>
   );
