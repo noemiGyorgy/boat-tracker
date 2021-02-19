@@ -1,70 +1,99 @@
-# Getting Started with Create React App
+# Boat tracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The boat tracker application follows the journey of a boat, also it saves the coordinates and the direction of the boat. When the boat finishes its journey, the live track becomes a saved track.
 
-## Available Scripts
+## Prerequisite
 
-In the project directory, you can run:
+### Mockup
 
-### `npm start`
+The [position streamer](https://github.com/noemiGyorgy/position-streamer) application is a mockup Express.js application.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```
+git clone git@github.com:noemiGyorgy/position-streamer.git
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Install the packages:
 
-### `npm test`
+```
+npm install
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Start the application:
 
-### `npm run build`
+```
+node server
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Database
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Set up a PostgreSQL database. Tables will be dropped and created when the position-server starts.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Server
 
-### `npm run eject`
+The [position-server](https://github.com/noemiGyorgy/position-server) application receives the position of the boat and stores it in a PostgreSQL database. The user can stop recording these data from the UI.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```
+git clone git@github.com:noemiGyorgy/position-streamer.git
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Install the packages:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```
+npm install
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+In root set up these environment variables:
 
-## Learn More
+```
+DB_USER=<username>
+DB_HOST=localhost
+DB_NAME=<database>
+DB_PASSWORD=<password>
+DB_PORT=5432
+PORT=4000
+STREAMER=http://localhost:5000
+FRONTEND=http://localhost:3000
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Start the application:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+node server
+```
 
-### Code Splitting
+### Front end
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Clone the frontend from this repository:
 
-### Analyzing the Bundle Size
+```
+git@github.com:noemiGyorgy/boat-tracker.git
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Install the packages:
 
-### Making a Progressive Web App
+```
+npm install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+In root set up these environment variables:
 
-### Advanced Configuration
+```
+REACT_APP_SERVER=http://localhost:4000
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Start the application:
 
-### Deployment
+```
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Usage
 
-### `npm run build` fails to minify
+Navigate to the frontend: http://localhost:3000/
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The position streamer accepts a **csv** file with columns named lat,lon,heading (coordinates and the direction of the boat) and it streams the rows of the file. You can download these files from the **sample-data** directory (position streamer repository). Streaming automatically begins when a file is uploaded.
+
+Upload them here:
+http://localhost:5000/
+
+Clicking on the stop/start button, the server stops recording the position of the boat.
