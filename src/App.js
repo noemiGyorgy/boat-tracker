@@ -25,11 +25,10 @@ function App() {
 
   return (
     <div className="App">
-      <Sidebar stopped={stopped} />
-
       <div id="content">
         <MapView />
       </div>
+      <Sidebar stopped={stopped} />
     </div>
   );
 }
