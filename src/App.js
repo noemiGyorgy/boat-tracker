@@ -25,7 +25,7 @@ function App() {
       setMapView(<MapView positions={positions} />);
     });
     socket.on("endOfTrack", (message) => {
-      console.log(message);
+      alert(message);
     });
   }, [setPositions, setStopped]);
 
