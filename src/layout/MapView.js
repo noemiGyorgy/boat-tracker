@@ -14,7 +14,7 @@ import { LineString } from "ol/geom";
 const stoppedStyle = [
   new Style({
     stroke: new Stroke({
-      color: "#000000",
+      color: "#ff0000",
       width: 2,
     }),
   }),
