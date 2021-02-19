@@ -3,6 +3,7 @@ import Map from "ol/Map";
 import View from "ol/View";
 import TileLayer from "ol/layer/Tile";
 import OSM from "ol/source/OSM";
+import Overlay from "ol/Overlay";
 
 function MapView() {
   const view = new View({
@@ -22,6 +23,11 @@ function MapView() {
       view: view,
       controls: [],
     });
+    const sidebar = new Overlay({
+      element: document.getElementById("sidebar"),
+      positioning: "top-right",
+    });
+    initialMap.addOverlay(sidebar);
   }, []);
 
   return <div ref={mapElement} className="map-container"></div>;
