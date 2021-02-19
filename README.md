@@ -97,3 +97,7 @@ Upload them here:
 http://localhost:5000/
 
 Clicking on the stop/start button, the server stops recording the position of the boat.
+
+## Bugs and features to implement
+
+I am going to implement displaying all recorded tracks tomorrow. Positioning the boat is not working yet (the coordinates of the boat are [0,0]).
