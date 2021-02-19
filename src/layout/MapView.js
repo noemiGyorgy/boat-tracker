@@ -4,12 +4,21 @@ import View from "ol/View";
 import TileLayer from "ol/layer/Tile";
 import Vector from "ol/layer/Vector";
 import OSM from "ol/source/OSM";
+import { Style, Stroke } from "ol/style";
 import VectorSource from "ol/source/Vector";
 import { fromLonLat } from "ol/proj";
-import { Style, Stroke } from "ol/style";
 import Feature from "ol/Feature";
 import { LineString } from "ol/geom";
 //import { ship } from "../components/Ship";
+
+const stoppedStyle = [
+  new Style({
+    stroke: new Stroke({
+      color: "#000000",
+      width: 2,
+    }),
+  }),
+];
 
 const recordingStyle = [
   new Style({
