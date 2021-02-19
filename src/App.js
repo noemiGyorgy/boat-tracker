@@ -27,7 +27,7 @@ function App() {
     socket.on("endOfTrack", (message) => {
       console.log(message);
     });
-  }, [setPositions]);
+  }, [setPositions, setStopped]);
 
   return (
     <div className="App">
