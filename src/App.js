@@ -7,6 +7,8 @@ import Sidebar from "./layout/Sidebar";
 function App() {
   const [stopped, setStopped] = useState(false);
   const [positions, setPositions] = useState([]);
+  const [mapView, setMapView] = useState(<MapView positions={positions} />);
+
   useEffect(() => {
     const socket = io.connect(process.env.REACT_APP_SERVER, {
       withCredentials: true,
@@ -20,6 +22,7 @@ function App() {
       let newPositions = positions;
       newPositions.push(message);
       setPositions(newPositions);
+      setMapView(<MapView positions={positions} />);
     });
     socket.on("endOfTrack", (message) => {
       console.log(message);
@@ -28,9 +31,7 @@ function App() {
 
   return (
     <div className="App">
-      <div id="content">
-        <MapView key={positions.length} positions={positions}/>
-      </div>
+      <div id="content">{mapView}</div>
       <Sidebar stopped={stopped} />
     </div>
   );

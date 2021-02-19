@@ -29,30 +29,23 @@ const recordingStyle = [
   }),
 ];
 
-function MapView(props) {
+function MapView({ positions }) {
+  let pos = [...positions];
   const [map, setMap] = useState();
-  const view = new View({
-    center: [0, 0],
-    zoom: 1,
-  });
   const mapElement = useRef();
   const mapRef = useRef();
   mapRef.current = map;
-  console.log(props.positions);
-  console.log("Bne");
 
-  const move = () => {
-    console.log(props.positions);
-
-    let lastIndex = props.positions.length - 1;
-    let coordOld = fromLonLat(
-      props.positions[lastIndex - 1].lon,
-      props.positions[lastIndex - 1].lat
-    );
-    let coordNew = fromLonLat(
-      props.positions[lastIndex].lon,
-      props.positions[lastIndex].lat
-    );
+  const move = (positions, setMap) => {
+    let lastIndex = positions.length - 1;
+    let coordOld = fromLonLat([
+      positions[lastIndex - 1].lon,
+      positions[lastIndex - 1].lat,
+    ]);
+    let coordNew = fromLonLat([
+      positions[lastIndex].lon,
+      positions[lastIndex].lat,
+    ]);
 
     let lineStr = new LineString([coordOld, coordNew]);
 
@@ -68,12 +61,8 @@ function MapView(props) {
     });
 
     line.setStyle(recordingStyle);
-    map.addLayer(line);
     //map.addLayer(ship(coordinates, heading));
-    let newView = map
-      .getView()
-      .fit(lineStr, { padding: [170, 50, 30, 150], maxZoom: 17 });
-    map.setView(newView);
+    map.getView().fit(lineStr, { padding: [170, 50, 30, 150], maxZoom: 17 });
   };
 
   useEffect(() => {
@@ -84,21 +73,20 @@ function MapView(props) {
           source: new OSM(),
         }),
       ],
-      view: view,
+      view: new View({
+        center: [0, 0],
+        zoom: 1,
+      }),
       controls: [],
     });
     setMap(initialMap);
   }, []);
 
   useEffect(() => {
-    if (
-      props.positions.length &&
-      props.positions.length > 1 &&
-      map !== undefined
-    ) {
-      move();
+    if (pos.length && pos.length > 1 && map !== undefined) {
+      move(pos, setMap);
     }
-  }, [props.positions]);
+  }, [pos, setMap]);
 
   return <div ref={mapElement} className="map-container"></div>;
 }
