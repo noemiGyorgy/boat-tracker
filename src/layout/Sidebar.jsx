@@ -23,9 +23,18 @@ function Sidebar(props) {
 
   return (
     <div id="sidebar" className="container">
-      <div className="sidebar-header">
-        <h3 className="text-info">Tracks</h3>
+      <div className="tracks">
+        <h2 className="text-info">Tracks</h2>
+        <a
+          href={process.env.REACT_APP_UPLOAD}
+          target="_self"
+          rel="noopener noreferrer"
+          className="text-secondary"
+        >
+          <span>UPLOAD NEW FILE</span>
+        </a>
       </div>
+
       <button
         id="stop"
         type="button"

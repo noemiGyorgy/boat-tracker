@@ -2,7 +2,7 @@ import "./App.css";
 import React, { useEffect, useState, useContext } from "react";
 import { io } from "socket.io-client";
 import MapView from "./layout/MapView";
-import Sidebar from "./layout/Sidebar";
+import Sidebar from "./layout/Sidebar.jsx";
 import { TrackContext } from "./context/TrackContext";
 
 function App() {
