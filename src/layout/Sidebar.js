@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
+import { TrackContext } from "../context/TrackContext";
 
 function Sidebar(props) {
+  const context = useContext(TrackContext);
   const [buttonValue, setButtonValue] = useState(
     props.stopped ? "START RECORDING" : "STOP RECORDING"
   );
