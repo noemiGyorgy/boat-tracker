@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import { TrackContext } from "../context/TrackContext";
+import ListItem from "../components/ListItem";
 
 function Sidebar(props) {
   const context = useContext(TrackContext);
@@ -12,9 +13,7 @@ function Sidebar(props) {
 
   if (context.tracks && context.tracks.length > 0) {
     tracks = context.tracks.map((track) => (
-      <li key={track.id} id={track.id} className="list-group-item">
-        {new Date(track.start).toLocaleString()}
-      </li>
+      <ListItem key={track.id} trackId={track.id} start={track.start} />
     ));
   }
 
@@ -47,9 +46,7 @@ function Sidebar(props) {
         </a>
       </div>
 
-      <div className="tracks mt-5 mb-5">
-        <ul className="list-group">{tracks}</ul>
-      </div>
+      <div className="tracks list-group mt-5 mb-5">{tracks}</div>
 
       <div>
         <button
