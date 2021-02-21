@@ -8,13 +8,22 @@ function Sidebar(props) {
     props.stopped ? "START RECORDING" : "STOP RECORDING"
   );
 
+  let tracks = "No recorded tracks";
+
+  if (context.tracks && context.tracks.length > 0) {
+    tracks = context.tracks.map((track) => (
+      <li key={track.id} id={track.id} className="list-group-item">
+        {new Date(track.start).toLocaleString()}
+      </li>
+    ));
+  }
+
   const changeStatus = () => {
     axios
       .put(process.env.REACT_APP_SERVER + "/status", {
         withCredentials: true,
       })
       .then((response) => {
-        console.log(response.data.stopped);
         setButtonValue(
           response.data.stopped ? "START RECORDING" : "STOP RECORDING"
         );
@@ -22,8 +31,11 @@ function Sidebar(props) {
   };
 
   return (
-    <div id="sidebar" className="container">
-      <div className="tracks">
+    <div
+      id="sidebar"
+      className="container d-flex flex-column justify-content-between"
+    >
+      <div>
         <h2 className="text-info">Tracks</h2>
         <a
           href={process.env.REACT_APP_UPLOAD}
@@ -35,14 +47,20 @@ function Sidebar(props) {
         </a>
       </div>
 
-      <button
-        id="stop"
-        type="button"
-        className="btn btn-outline-info p-4 pl-5 pr-5 mt-5"
-        onClick={changeStatus}
-      >
-        {buttonValue}
-      </button>
+      <div className="tracks mt-5 mb-5">
+        <ul className="list-group">{tracks}</ul>
+      </div>
+
+      <div>
+        <button
+          id="stop"
+          type="button"
+          className="btn btn-outline-info p-4 pl-5 pr-5"
+          onClick={changeStatus}
+        >
+          {buttonValue}
+        </button>
+      </div>
     </div>
   );
 }

@@ -20,7 +20,6 @@ function App() {
       context.setTracks(tracks);
     });
     socket.on("position", (message) => {
-      console.log(message);
       setStopped(message.stopped);
       let newPositions = positions;
       newPositions.push(message);
