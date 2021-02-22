@@ -81,3 +81,5 @@ Select a recorded track from the list and it will display the journey of the boa
 Unselecting tracks doesn't work. I tried to apply the same strategy as I deleted the symbol of the boat, but it didn't worked.
 
 I would create an option of speeding up the live broadcasting.
+
+The map is not precise in this resolution. Changeing projection when we zoom in would be a good solution. 
