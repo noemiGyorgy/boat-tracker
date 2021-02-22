@@ -22,6 +22,7 @@ FRONTEND=https://boat-tracker.netlify.app
 SERVER=http://localhost:4000
 STREAMER=http://localhost:5000
 ```
+**Broadcasting with 1Hz could be slow for testing. I would recommend rewriting delay from 1000ms to 100ms (position-streamer -> server.js -> 33rd line).**
 
 Start the application:
 ```
@@ -65,8 +66,6 @@ node server
 The frontend is deployed here: [https://boat-tracker.netlify.app](https://boat-tracker.netlify.app)
 
 ## Usage
-
-**Broadcasting with 1Hz could be slow for testing. I would recommend rewriting delay from 1000ms to 100ms (position-streamer -> server.js -> 33rd line).**
 
 On the top of the sidebar click on "UPLOAD NEW FILE".
 
