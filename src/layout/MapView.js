@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useContext } from "react";
 import Map from "ol/Map";
 import View from "ol/View";
 import TileLayer from "ol/layer/Tile";
@@ -9,6 +9,7 @@ import VectorSource from "ol/source/Vector";
 import { fromLonLat } from "ol/proj";
 import Feature from "ol/Feature";
 import { LineString } from "ol/geom";
+import { TrackContext } from "../context/TrackContext";
 //import { ship } from "../components/Ship";
 
 const stoppedStyle = [
@@ -29,13 +30,13 @@ const recordingStyle = [
   }),
 ];
 
-function MapView({ positions }) {
-  let pos = [...positions];
+function MapView(props) {
+  const context = useContext(TrackContext);
+  let pos = [...props.positions];
   const [map, setMap] = useState();
   const mapElement = useRef();
   const mapRef = useRef();
   mapRef.current = map;
-  const [features, setFeatures] = useState([]);
 
   const move = (positions, setMap) => {
     let lastIndex = positions.length - 1;
@@ -57,13 +58,16 @@ function MapView({ positions }) {
       positions[lastIndex].stopped ? stoppedStyle : recordingStyle
     );
 
-    let newFeatures = features;
-    newFeatures.push(newFeature);
-    setFeatures(newFeatures);
+    let newFeatures = context.features;
+    if (newFeatures[props.start] === undefined) {
+      newFeatures[props.start] = [];
+    }
+    newFeatures[props.start].push(newFeature);
+    context.setFeatures(newFeatures);
 
     let line = new Vector({
       source: new VectorSource({
-        features: features,
+        features: context.features[props.start],
       }),
     });
     map.addLayer(line);

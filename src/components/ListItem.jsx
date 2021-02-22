@@ -7,13 +7,23 @@ function ListItem(props) {
   const [activeItem, setActiveItem] = useState("");
 
   const handleClick = () => {
-    if (context.details[props.trackId] !== undefined) {
+    context.setRecordedPositions([]);
+    let newFeatures = context.features;
+    delete newFeatures[props.start];
+    context.setFeatures(newFeatures);
+
+    if (context.details[props.start] !== undefined) {
       let newDetails = context.details;
-      newDetails[props.trackId].visible = !newDetails[props.trackId].visible;
+      newDetails[props.start].visible = !newDetails[props.start].visible;
       context.setDetails(newDetails);
       setActiveItem(
-        context.details[props.trackId].visible ? "bg-info text-white" : ""
+        context.details[props.start].visible ? "text-white bg-info" : ""
       );
+      if (context.details[props.start].visible) {
+        context.setCurrentTrack(props.start);
+      } else {
+        context.setCurrentTrack(0);
+      }
     } else {
       axios
         .get(process.env.REACT_APP_SERVER + "/track/" + props.trackId, {
@@ -21,9 +31,10 @@ function ListItem(props) {
         })
         .then((response) => {
           let newDetails = context.details;
-          newDetails[props.trackId] = { track: response.data, visible: true };
+          newDetails[props.start] = { track: response.data, visible: true };
           context.setDetails(newDetails);
-          setActiveItem("bg-info");
+          setActiveItem("text-white bg-info");
+          context.setCurrentTrack(props.start);
         });
     }
   };

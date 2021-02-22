@@ -15,6 +15,7 @@ function App() {
     const socket = io.connect(process.env.REACT_APP_SERVER, {
       withCredentials: true,
     });
+    let live = 0;
     socket.on("connection", (tracks) => {
       console.log("Connected to the server.");
       context.setTracks(tracks);
@@ -24,12 +25,39 @@ function App() {
       let newPositions = positions;
       newPositions.push(message);
       setPositions(newPositions);
-      setMapView(<MapView positions={positions} />);
+      live = message.start;
+      if (context.currentTrack === 0) {
+        context.setCurrentTrack(live);
+      }
+
+      setMapView(<MapView positions={positions} start={live} />);
     });
     socket.on("endOfTrack", (tracks) => {
       context.setTracks(tracks);
+      alert("The journey is over.");
     });
-  }, [setPositions, setStopped, context.setTracks]);
+  }, [setPositions, setStopped, context.setTracks, context.features]);
+
+  useEffect(() => {
+    if (
+      context.currentTrack !== 0 &&
+      context.details[context.currentTrack] !== undefined
+    ) {
+      context.details[context.currentTrack].track.forEach((pos, i) =>
+        setTimeout(() => {
+          let newRecordedPositions = context.recordedPositions;
+          newRecordedPositions.push(pos);
+          context.setRecordedPositions(newRecordedPositions);
+          setMapView(
+            <MapView
+              positions={context.recordedPositions}
+              start={context.currentTrack}
+            />
+          );
+        }, 10 * i)
+      );
+    }
+  }, [context.setRecordedPositions, context.currentTrack]);
 
   return (
     <div className="App">
