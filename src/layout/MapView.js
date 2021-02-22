@@ -30,6 +30,8 @@ const recordingStyle = [
   }),
 ];
 
+export const removeLayer = (map, layerName) => {};
+
 function MapView(props) {
   const context = useContext(TrackContext);
   let pos = [...props.positions];
@@ -69,6 +71,7 @@ function MapView(props) {
       source: new VectorSource({
         features: context.features[props.start],
       }),
+      name: props.start,
     });
     map.addLayer(line);
     map.getLayers().forEach((layer) => {
@@ -103,6 +106,23 @@ function MapView(props) {
       move(pos, setMap);
     }
   }, [pos, setMap]);
+
+  useEffect(() => {
+    if (map !== undefined) {
+      Object.keys(context.details).forEach((track) => {
+        if (!context.details[track].visible) {
+          map.getLayers().forEach((layer) => {
+            if (layer !== undefined && layer.get("name") === track) {
+              map.removeLayer(layer);
+            }
+          });
+          let newFeatures = context.features;
+          delete newFeatures[track];
+          context.setFeatures(newFeatures);
+        }
+      });
+    }
+  }, [context.details, context.currentTrack, context.features, map]);
 
   return <div ref={mapElement} className="map-container"></div>;
 }
