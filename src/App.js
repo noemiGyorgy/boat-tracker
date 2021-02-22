@@ -16,9 +16,10 @@ function App() {
       withCredentials: true,
     });
     let live = 0;
-    socket.on("connection", (tracks) => {
+    socket.on("connection", (message) => {
       console.log("Connected to the server.");
-      context.setTracks(tracks);
+      context.setTracks(message.tracks);
+      setStopped(message.stopped);
     });
     socket.on("position", (message) => {
       setStopped(message.stopped);
@@ -35,6 +36,9 @@ function App() {
     socket.on("endOfTrack", (tracks) => {
       context.setTracks(tracks);
       alert("The journey is over.");
+    });
+    socket.on("stopped", (message) => {
+      setStopped(message);
     });
   }, [setPositions, setStopped, context.setTracks, context.features]);
 

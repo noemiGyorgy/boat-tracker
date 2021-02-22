@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { TrackContext } from "../context/TrackContext";
 import ListItem from "../components/ListItem";
@@ -16,6 +16,10 @@ function Sidebar(props) {
       <ListItem key={track.id} trackId={track.id} start={track.start} />
     ));
   }
+
+  useEffect(() => {
+    setButtonValue(props.stopped ? "START RECORDING" : "STOP RECORDING");
+  }, [props.stopped]);
 
   const changeStatus = () => {
     axios
