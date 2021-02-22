@@ -13,7 +13,12 @@ function Sidebar(props) {
 
   if (context.tracks && context.tracks.length > 0) {
     tracks = context.tracks.map((track) => (
-      <ListItem key={track.id} trackId={track.id} start={track.start} />
+      <ListItem
+        key={track.id}
+        trackId={track.id}
+        start={track.start}
+        live={track.live}
+      />
     ));
   }
 

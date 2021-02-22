@@ -47,6 +47,7 @@ function ListItem(props) {
         className={`list-group-item list-group-item-action ${activeItem}`}
         onClick={handleClick}
       >
+        <span className="text-danger">{props.live ? "⦿ " : ""}</span>
         {new Date(props.start).toLocaleString()}
       </a>
     </React.Fragment>

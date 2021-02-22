@@ -26,12 +26,15 @@ export function ship(coordinates, heading) {
     }),
   });
 
-  let newFeature = new Feature(new Point(coordinates));
+  let newFeature = new Feature({
+    geometry: new Point(coordinates),
+  });
   newFeature.setStyle(triangle);
 
   return new VectorLayer({
     source: new VectorSource({
       features: [newFeature],
     }),
+    name: "ship",
   });
 }

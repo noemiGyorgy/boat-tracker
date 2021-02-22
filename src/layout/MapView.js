@@ -10,7 +10,7 @@ import { fromLonLat } from "ol/proj";
 import Feature from "ol/Feature";
 import { LineString } from "ol/geom";
 import { TrackContext } from "../context/TrackContext";
-//import { ship } from "../components/Ship";
+import { ship } from "../components/Ship";
 
 const stoppedStyle = [
   new Style({
@@ -71,8 +71,13 @@ function MapView(props) {
       }),
     });
     map.addLayer(line);
+    map.getLayers().forEach((layer) => {
+      if (layer && layer.get("name") === "ship") {
+        map.removeLayer(layer);
+      }
+    });
+    map.addLayer(ship(coordNew, positions[lastIndex].heading));
 
-    //map.addLayer(ship(coordinates, heading));
     map.getView().fit(lineStr, { padding: [170, 50, 30, 150], maxZoom: 17 });
   };
 
